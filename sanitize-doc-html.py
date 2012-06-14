@@ -1,7 +1,7 @@
 from BeautifulSoup import BeautifulSoup, Comment
 import codecs
 import sys
-valid_tags = 'p i strong b a h1 h2 h3 h4 pre br img ul li'.split()
+valid_tags = 'p i strong b a h1 h2 h3 h4 pre br img ul ol li'.split()
 valid_attrs = 'href src'.split()
 value = open(sys.argv[1]).read()
 soup = BeautifulSoup(value)
