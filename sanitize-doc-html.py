@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 from bs4 import BeautifulSoup, Comment
-import os, sys, optparse, codecs
+import os, sys, optparse, codecs, re
 
 valid_tags = 'p i em b strong blockquote a h1 h2 h3 h4 h5 h6 pre br img ul ol li'.split()
 valid_attrs = 'href src'.split()
@@ -30,6 +30,8 @@ def main():
             tag.name = 'em'
         if tag.name == 'b':
             tag.name = 'strong'
+    for tag in soup.find_all(text=True):
+        tag.string.replace_with(re.sub('(?:\s*\n\s*)+', ' ', tag.string))
     output = soup.prettify(formatter="html")
     if options.output_name:
         open(os.path.abspath(options.output_name), 'w').write(output)
