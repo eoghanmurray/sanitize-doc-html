@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from BeautifulSoup import BeautifulSoup, Comment
+from bs4 import BeautifulSoup, Comment
 import os, sys, optparse, codecs
 
 valid_tags = 'p i em b strong blockquote a h1 h2 h3 h4 pre br img ul ol li'.split()
@@ -19,18 +19,17 @@ def main():
     for comment in soup.findAll(
         text=lambda text: isinstance(text, Comment)):
         comment.extract()
-    for tag in soup.findAll(True):
+    for tag in soup.find_all(True):
         if tag.name not in valid_tags:
             tag.hidden = True
-        tag.attrs = [(attr, val) for attr, val in tag.attrs
-                     if attr in valid_attrs]
+        tag.attrs = dict((attr, val) for attr, val in tag.attrs.items() if attr in valid_attrs)
         if tag.name == 'i':
             tag.name = 'em'
         if tag.name == 'b':
             tag.name = 'strong'
-    output = soup.renderContents()
+    output = soup.prettify(formatter="html")
     if options.output_name:
-        open(os.path.abspath(options.output_name), 'w').writelines(output)
+        open(os.path.abspath(options.output_name), 'w').write(output)
     else:
         print(output)
 
