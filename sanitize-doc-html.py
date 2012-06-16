@@ -2,7 +2,7 @@
 from BeautifulSoup import BeautifulSoup, Comment
 import os, sys, optparse, codecs
 
-valid_tags = 'p i strong b a h1 h2 h3 h4 pre br img ul ol li'.split()
+valid_tags = 'p i em b strong blockquote a h1 h2 h3 h4 pre br img ul ol li'.split()
 valid_attrs = 'href src'.split()
 
 def main():
@@ -24,6 +24,10 @@ def main():
             tag.hidden = True
         tag.attrs = [(attr, val) for attr, val in tag.attrs
                      if attr in valid_attrs]
+        if tag.name == 'i':
+            tag.name = 'em'
+        if tag.name == 'b':
+            tag.name = 'strong'
     output = soup.renderContents()
     if options.output_name:
         open(os.path.abspath(options.output_name), 'w').writelines(output)
