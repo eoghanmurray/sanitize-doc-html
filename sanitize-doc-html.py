@@ -30,6 +30,12 @@ def main():
             tag.name = 'em'
         if tag.name == 'b':
             tag.name = 'strong'
+    for tag in soup.find_all(['h1', 'h2', 'h3', 'h4', 'h5', 'h6']):
+        for dtag in tag.descendants:
+            if hasattr(dtag, 'contents') and len(dtag.contents) == 1:
+                dtag.hidden = True
+            else:
+                break
     for tag in soup.find_all(text=True):
         tag.string.replace_with(re.sub('(?:\s*\n\s*)+', ' ', tag.string))
     output = soup.prettify(formatter="html")
